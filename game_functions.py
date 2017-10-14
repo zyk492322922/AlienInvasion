@@ -4,26 +4,35 @@ import pygame
 
 """ 该项目中所有动画方法都放在该文件中  方便统一管理 """
 
+# 单独处理按下键盘事件
+def check_keydown_event(event,ship):
+	if event.key == pygame.K_RIGHT:
+		ship.moving_right = True
+	elif event.key == pygame.K_LEFT:
+		ship.moving_left = True
 
 
+# 单独处理松开键盘事件
+def check_keyup_event(event,ship):
+	if event.key == pygame.K_RIGHT:
+		ship.moving_right = False
+	elif event.key == pygame.K_LEFT:
+		ship.moving_left = False
+
+
+# 循环监听鼠标和键盘事件
 def  check_events(ship):
-	# 循环监听鼠标和键盘事件
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			sys.exit()
 		elif event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_RIGHT:
-				ship.moving_right = True
-			elif event.key == pygame.K_LEFT:
-				ship.moving_left = True
+			check_keydown_event(event,ship)
 		elif event.type == pygame.KEYUP:
-			if event.key == pygame.K_RIGHT:
-				ship.moving_right = False
-			elif event.key == pygame.K_LEFT:
-				ship.moving_left = False
+			check_keyup_event(event,ship)
 
         
-#  刷新屏幕信息
+
+# 刷新屏幕信息
 def  update_screen(ai_setting,screen,ship):
 	# 填充颜色
 	screen.fill(ai_setting.bg_color)
