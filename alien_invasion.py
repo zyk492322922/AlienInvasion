@@ -3,6 +3,7 @@ from settings import Settings
 from ship import Ship
 import game_functions as gf
 from pygame.sprite import Group
+from alien import Alien
 
 def run_game():
 	""" 初始化游戏并创建一个屏幕对象 """
@@ -13,8 +14,13 @@ def run_game():
 	
     # 创建一艘飞船
 	ship = Ship(screen)
-	# 创建一个用户存储子弹的编组
+	# 创建一个用来存储子弹的编组
 	bullets = Group()
+    
+    # 创建一个存放外星人的编组
+	aliens = Group()
+
+	gf.create_aliens(ai_setting,screen,aliens)
 
 	while True:
 		# 监听事件
@@ -23,16 +29,12 @@ def run_game():
 		# 飞船移动
 		ship.moving()
 
-		# 子弹移动
-		for bullet in bullets:
-			bullet.moving()
+		# 子弹移动 更新子弹信息
+		gf.update_bullet(bullets)
 
-		# screen.fill(ai_setting.bg_color)
         # 绘制飞船位置
-		# ship.blitme()
 		# # 让绘制的屏幕可见
-		# pygame.display.flip()
-		gf.update_screen(ai_setting,screen,ship,bullets)
+		gf.update_screen(ai_setting,screen,ship,bullets,aliens)
 
 
 
