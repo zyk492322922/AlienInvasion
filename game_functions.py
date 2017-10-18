@@ -23,21 +23,45 @@ def fire_bullet(ai_setting,screen,ship,bullets):
 		new_bullet = Bullet(ai_setting,screen,ship)
 		bullets.add(new_bullet)
 
-# 创建一个外星人, 并添加到编组aliens中
-def create_aliens(ai_setting,screen,aliens):
+# 创建一行外星人, 并添加到编组aliens中
+def create_aliens(ai_setting,screen,ship,aliens):
 	# 计算一行可以有多少外星人
 	alien = Alien(ai_setting,screen)
+    # 获取每行可以创建多少外星人
+	alien_number = get_alien_number(ai_setting,alien.rect.width)
+	number_rows = get_alien_rows(ai_setting,ship.rect.height,alien.rect.height)
+	print(number_rows)
+	#  创建第一行外星人
+	for row in range(number_rows-1):
+		# print('row =='+str(row))
+		for number in range(alien_number):
+			# print('hang =='+str(number))
+			# 循环创建一个外星人， 并加到当前行
+			create_alien(ai_setting,screen,aliens,number,row)
+
+# 创建外星人 算法
+def create_alien(ai_setting,screen,aliens,alien_number, number_rows):
+	# 创建一个外星人， 并加到当前行
+	alien = Alien(ai_setting,screen)
 	alien_width = alien.rect.width
+	alien.x = alien_width + 2 * alien_width * alien_number
+	alien.rect.x = alien.x
+	alien.rect.y = alien.rect.height + 2 * alien.rect.height * number_rows
+	aliens.add(alien)
+
+# 计算每行可以创建外星人的个数
+def get_alien_number(ai_setting,alien_width):
 	avaliable_space_x = ai_setting.screen_width - 2*alien_width
 	alien_number = int(avaliable_space_x / (2*alien_width))
-	
-	#  创建第一行外星人
-	for number in range(alien_number):
-		# 创建一个外星人， 并加到当前行
-		alien = Alien(ai_setting,screen)
-		alien.x = alien_width + 2 * alien_width * number
-		alien.rect.x = alien.x
-		aliens.add(alien)
+	return alien_number
+
+
+# 计算可以创建多少行外星人
+def get_alien_rows(ai_setting,ship_height,alien_height):
+	avaliable_space_y = ai_setting.screen_height - 3 * alien_height - ship_height
+	number_rows = int(avaliable_space_y/(2 * alien_height))
+	return number_rows
+
 
 # 单独处理松开键盘事件
 def check_keyup_event(event,ship):

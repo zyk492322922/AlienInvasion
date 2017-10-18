@@ -20,7 +20,7 @@ def run_game():
     # 创建一个存放外星人的编组
 	aliens = Group()
 
-	gf.create_aliens(ai_setting,screen,aliens)
+	gf.create_aliens(ai_setting,screen,ship,aliens)
 
 	while True:
 		# 监听事件
